@@ -4,7 +4,7 @@ Concentric teal rings · Segmented arcs
 """
 
 import os, time, math, random, threading
-import tkinter as tk
+#import tkinter as tk
 from collections import deque
 from pathlib import Path
 import psutil
