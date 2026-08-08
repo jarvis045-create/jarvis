@@ -144,12 +144,12 @@ CONTROL_TOKEN_RE = re.compile(r"<ctrl\d+>", re.IGNORECASE)
 LIVE_MODEL = "models/gemini-2.5-flash-native-audio-latest"
 
 # ── Audio ───────────────────────────────────────────────────────────────────
-FORMAT           = pyaudio.paInt16
-CHANNELS         = 1
-SEND_SAMPLE_RATE = 16000
-RECV_SAMPLE_RATE = 24000
-CHUNK_SIZE       = 1024
-pya              = pyaudio.PyAudio()
+#FORMAT           = pyaudio.paInt16
+#CHANNELS         = 1
+#SEND_SAMPLE_RATE = 16000
+#RECV_SAMPLE_RATE = 24000
+#CHUNK_SIZE       = 1024
+#pya              = pyaudio.PyAudio()
 
 # ── Tool tanımları — paylaşılan modülden ────────────────────────────────────
 from tool_defs import TOOL_DECLARATIONS
