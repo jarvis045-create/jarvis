@@ -20,7 +20,7 @@ from google.genai import types  # type: ignore[reportMissingImports]
 
 from app_config import get_app_config_value
 #from ui import JarvisUI
-from memory.memory_manager import load_memory, update_memory, delete_memory, format_memory_for_prompt
+from memory_manager import load_memory, update_memory, delete_memory, format_memory_for_prompt
 from actions.open_app import open_app
 from actions.sys_info  import sys_info
 from actions.calendar import get_calendar_events, add_calendar_event, delete_calendar_event
