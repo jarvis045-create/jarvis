@@ -19,7 +19,7 @@ from google import genai  # type: ignore[reportMissingImports]
 from google.genai import types  # type: ignore[reportMissingImports]
 
 from app_config import get_app_config_value
-from ui import JarvisUI
+#from ui import JarvisUI
 from memory.memory_manager import load_memory, update_memory, delete_memory, format_memory_for_prompt
 
 from sys_info  import sys_info
