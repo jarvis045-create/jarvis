@@ -2,7 +2,6 @@
 # Kurulum:  pip install -r requirements.txt
 
 google-genai          # Gemini Live API (ses + araç çağrıları)
-pyaudio               # Mikrofon / hoparlör (gerçek zamanlı ses)
 psutil                # Sistem bilgisi (pil, CPU, RAM, disk)
 Pillow                # Görüntü işleme (ekran + webcam analizi)
 requests              # Hava durumu, YouTube API, YouTube arama
