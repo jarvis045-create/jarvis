@@ -14,7 +14,7 @@ import time
 import re
 from pathlib import Path
 
-import pyaudio  # type: ignore[reportMissingModuleSource]
+
 from google import genai  # type: ignore[reportMissingImports]
 from google.genai import types  # type: ignore[reportMissingImports]
 
