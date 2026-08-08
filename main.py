@@ -27,7 +27,7 @@ from calendar_actions import get_calendar_events, add_calendar_event, delete_cal
 from reminders import get_reminders, add_reminder
 from browser   import browser_control
 from shell     import shell_run
-from whatsapp  import send_whatsapp_message, save_whatsapp_contact
+#from whatsapp  import send_whatsapp_message, save_whatsapp_contact
 from media     import play_media
 from weather   import get_weather_summary
 from screen_vision import analyze_screen
