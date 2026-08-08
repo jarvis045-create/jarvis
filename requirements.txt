@@ -9,3 +9,4 @@ mss                   # Ekran görüntüsü yakalama (analyze_screen)
 opencv-python         # Webcam canlı akışı (toggle_webcam)
 pyperclip             # Pano kopyalama (WhatsApp otomasyonu)
 pyautogui             # WhatsApp Web otomatik gönderim (Enter)
+uvicorn
