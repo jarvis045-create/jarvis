@@ -21,17 +21,17 @@ from google.genai import types  # type: ignore[reportMissingImports]
 from app_config import get_app_config_value
 from ui import JarvisUI
 from memory.memory_manager import load_memory, update_memory, delete_memory, format_memory_for_prompt
-from actions.open_app import open_app
-from actions.sys_info  import sys_info
-from actions.calendar import get_calendar_events, add_calendar_event, delete_calendar_event
-from actions.reminders import get_reminders, add_reminder
-from actions.browser   import browser_control
-from actions.shell     import shell_run
-from actions.whatsapp  import send_whatsapp_message, save_whatsapp_contact
-from actions.media     import play_media
-from actions.weather   import get_weather_summary
-from actions.screen_vision import analyze_screen
-from actions.youtube_stats import get_youtube_channel_report
+
+from sys_info  import sys_info
+from calendar_actions import get_calendar_events, add_calendar_event, delete_calendar_event
+from reminders import get_reminders, add_reminder
+from browser   import browser_control
+from shell     import shell_run
+from whatsapp  import send_whatsapp_message, save_whatsapp_contact
+from media     import play_media
+from weather   import get_weather_summary
+from screen_vision import analyze_screen
+from youtube_stats import get_youtube_channel_report
 
 try:
     from wakeup_listener import WakeGestureListener
