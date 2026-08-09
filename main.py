@@ -23,7 +23,7 @@ from tool_defs import TOOL_DECLARATIONS
 BASE_DIR = Path(__file__).resolve().parent
 PROMPT_PATH = BASE_DIR / "core" / "prompt.txt"
 
-app = FastAPI(title="J.A.R.V.I.S. Cloud Core")
+app = FastAPI(title="Seymur's J.A.R.V.I.S. Cloud Core")
 
 LIVE_MODEL = "models/gemini-2.5-flash-native-audio-latest"
 
@@ -35,7 +35,7 @@ def load_system_prompt() -> str:
         return PROMPT_PATH.read_text(encoding="utf-8")
     except Exception:
         return (
-            "Sen JARVIS'sin — Bulutta çalışan kişisel AI asistanısın. "
+            "Sen Seymur'un JARVIS'isin — Bulutta çalışan kişisel AI asistanısın. "
             "Türkçe konuş. Kısa ve net yanıtlar ver. "
             "Araçları kullanarak görevleri tamamla."
         )
@@ -48,7 +48,7 @@ HTML_TEMPLATE = """
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-    <title>J.A.R.V.I.S. Mobile</title>
+    <title>Seymur's J.A.R.V.I.S.</title>
     <style>
         body {
             background-color: #030712;
@@ -111,7 +111,7 @@ HTML_TEMPLATE = """
     </style>
 </head>
 <body>
-    <h1>J.A.R.V.I.S.</h1>
+    <h1>Seymur's J.A.R.V.I.S.</h1>
     <div id="status">Bağlantı kuruluyor...</div>
     
     <div class="reactor" id="reactor" onclick="toggleListening()">
@@ -209,7 +209,7 @@ async def websocket_endpoint(websocket: WebSocket):
                 
                 if packet.get("type") == "start_session":
                     await session.send_client_content(
-                        turns={"parts": [{"text": "Sistem aktif, kullanıcı seni tetikledi."}]},
+                        turns={"parts": [{"text": "Sistem aktif, Seymur seni tetikledi."}]},
                         turn_complete=True
                     )
                     
