@@ -4,7 +4,7 @@ Concentric teal rings · Segmented arcs
 """
 
 import os, time, math, random, threading
-#import tkinter as tk
+import tkinter as tk
 from collections import deque
 from pathlib import Path
 import psutil
@@ -392,7 +392,7 @@ class JarvisUI:
     def __init__(self):
         self.root = tk.Tk()
         self.root.withdraw()  # Tam render olana kadar gizle — siyah flash önlenir
-        self.root.title("J.A.R.V.I.S")
+        self.root.title("Seymur’s J.A.R.V.İ.S")
         self.root.resizable(False, False)  # Tam ekran dışında boyutlandırma kapalı
 
         sw = self.root.winfo_screenwidth()
@@ -672,8 +672,8 @@ class JarvisUI:
         if hasattr(self, "_social_bar"):
             self._social_bar.place(x=14, y=self.H - FOOTER_H - 52)
         for p in getattr(self, "particles", []):
-            p["x"] %= self.W
-            p["y"] %= self.H
+            p['x'] %= self.W
+            p['y'] %= self.H
         # Kamera açıksa layout değiştiğinde hedefleri ve label konumunu güncelle
         if self._webcam_active:
             cam_w, cam_h, cam_x, cam_y, shift, face = self._calc_cam_layout()
@@ -711,26 +711,20 @@ class JarvisUI:
                 return None
 
         name_lbl = tk.Label(
-            bar, text="Alp\nÜnlü",
+            bar, text="Seymur’s\nJ.A.R.V.İ.S",
             fg="#3a8a82", bg=C_BG,
             font=font_display(14), cursor="hand2",
             justify="left",
         )
         name_lbl.pack(side="left", padx=(0, 10))
-        name_lbl.bind("<Button-1>", _open("https://www.instagram.com/alppunlu"))
+        name_lbl.bind("<Button-1>", _open("https://www.instagram.com/zynlv.45?igsh=b2dqdmhrc3lwazds&utm_source=qr"))
 
         self._icon_ig = _load_icon("instagram-logo.png")
-        self._icon_yt = _load_icon("youtube-logo.png")
 
         if self._icon_ig:
             ig_lbl = tk.Label(bar, image=self._icon_ig, bg=C_BG, cursor="hand2")
             ig_lbl.pack(side="left", padx=4)
-            ig_lbl.bind("<Button-1>", _open("https://www.instagram.com/alppunlu"))
-
-        if self._icon_yt:
-            yt_lbl = tk.Label(bar, image=self._icon_yt, bg=C_BG, cursor="hand2")
-            yt_lbl.pack(side="left", padx=4)
-            yt_lbl.bind("<Button-1>", _open("https://www.youtube.com/@alpunlu"))
+            ig_lbl.bind("<Button-1>", _open("https://www.instagram.com/zynlv.45?igsh=b2dqdmhrc3lwazds&utm_source=qr"))
 
     # ── Shutdown button (sağ alt, büyük) ────────────────────────────────────
     def _build_shutdown_button(self):
@@ -1005,52 +999,8 @@ class JarvisUI:
 
     # ── Autostart toggle ─────────────────────────────────────────────────────
     def _autostart_plist_dst(self) -> Path:
-        # Windows: Başlangıç klasöründeki kısayol (macOS LaunchAgent karşılığı)
         from make_shortcut import startup_shortcut_path
         return startup_shortcut_path()
-
-    def _build_autostart_plist(self) -> str:
-        """LaunchAgent plist'ini bu makineye göre DİNAMİK üretir.
-        Sabit kullanıcı yolu (örn. /Users/...) gömmez; her bilgisayarda çalışır."""
-        import sys
-        python_exe = sys.executable or "/usr/bin/python3"
-        py_dir     = str(Path(python_exe).parent)
-        main_py    = BASE_DIR / "main.py"
-        out_log    = BASE_DIR / "jarvis.log"
-        err_log    = BASE_DIR / "jarvis_error.log"
-        home       = Path.home()
-        return f"""<?xml version="1.0" encoding="UTF-8"?>
-<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN"
-  "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
-<plist version="1.0">
-<dict>
-    <key>Label</key>
-    <string>com.alp.jarvis</string>
-    <key>ProgramArguments</key>
-    <array>
-        <string>{python_exe}</string>
-        <string>{main_py}</string>
-    </array>
-    <key>WorkingDirectory</key>
-    <string>{BASE_DIR}</string>
-    <key>RunAtLoad</key>
-    <true/>
-    <key>KeepAlive</key>
-    <false/>
-    <key>StandardOutPath</key>
-    <string>{out_log}</string>
-    <key>StandardErrorPath</key>
-    <string>{err_log}</string>
-    <key>EnvironmentVariables</key>
-    <dict>
-        <key>PATH</key>
-        <string>{py_dir}:/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin</string>
-        <key>HOME</key>
-        <string>{home}</string>
-    </dict>
-</dict>
-</plist>
-"""
 
     def _is_autostart_installed(self) -> bool:
         return self._autostart_plist_dst().exists()
@@ -1244,7 +1194,7 @@ class JarvisUI:
                                 (0, bh, 1, -1), (bw, bh, -1, -1)]:
             c.create_line(bx, by, bx+sx*bl, by, fill=col, width=2)
             c.create_line(bx, by, bx, by+sy*bl, fill=col, width=2)
-        c.create_text(bw//2, bh//2, text=f"{icon}{lbl}",
+        c.create_text(bw//2, BH//2, text=f"{icon}{lbl}",
                       fill=col, font=font_body_bold(11))
 
     def _build_pause_button(self):
@@ -1267,7 +1217,7 @@ class JarvisUI:
                                (0, bh, 1, -1), (bw, bh, -1, -1)]:
             c.create_line(bx, by, bx+sx*bl, by, fill=col, width=2)
             c.create_line(bx, by, bx, by+sy*bl, fill=col, width=2)
-        c.create_text(bw//2, bh//2, text=text, fill=col, font=font_body_bold(11))
+        c.create_text(bw//2, BH//2, text=text, fill=col, font=font_body_bold(11))
 
     # ── Webcam toggle button ─────────────────────────────────────────────────
     def _build_webcam_button(self):
@@ -1289,7 +1239,7 @@ class JarvisUI:
                                 (0, bh, 1, -1), (bw, bh, -1, -1)]:
             c.create_line(bx, by, bx+sx*bl, by, fill=col, width=2)
             c.create_line(bx, by, bx, by+sy*bl, fill=col, width=2)
-        c.create_text(bw//2, bh//2, text=text, fill=col, font=font_body_bold(11))
+        c.create_text(bw//2, BH//2, text=text, fill=col, font=font_body_bold(11))
 
     def _toggle_webcam_ui(self):
         if self.on_webcam_toggle:
@@ -1473,18 +1423,14 @@ class JarvisUI:
 
     # ── Webcam layout hesabı ─────────────────────────────────────────────────
     def _calc_cam_layout(self):
-        """Kamera paneli boyutları + orb kayma değerlerini döndürür.
-
-        Dönen değerler: (cam_w, cam_h, cam_x, cam_y, orb_shift, orb_face)
-        """
         center_w  = self.CENTER_X1 - self.CENTER_X0
         cam_w     = min(center_w - 40, 580)
         cam_h     = int(cam_w * 9 / 16)
-        total_h   = self.CTRL_Y - HDR_H          # merkez alanın toplam yüksekliği
-        remaining = total_h - cam_h - 24         # kamera altında orb için kalan alan
+        total_h   = self.CTRL_Y - HDR_H
+        remaining = total_h - cam_h - 24
         new_face  = max(120, min(int(remaining * 0.82),
                                  int(center_w  * 0.70), 520))
-        new_cy    = HDR_H + cam_h + 16 + remaining // 2   # orb'un yeni merkezi
+        new_cy    = HDR_H + cam_h + 16 + remaining // 2
         shift     = new_cy - self.FCY
         cam_x     = self.FCX - cam_w // 2
         cam_y     = HDR_H + 8
@@ -1497,13 +1443,10 @@ class JarvisUI:
             _, _, _, _, shift, face = self._calc_cam_layout()
             self._cam_orb_shift_target = float(shift)
             self._cam_orb_face_target  = float(face)
-            # İlk açılışta face'i FACE'den başlat ki animasyon doğal görünsün
             if self._cam_orb_face < 1.0:
                 self._cam_orb_face = float(self.FACE)
         else:
             self._cam_orb_shift_target = 0.0
-            # Hedef: normal FACE boyutuna geri dön. Animasyon bitince 0'a sıfırlanır
-            # (_animate içinde), böylece FACE→0 geçişi görünmez.
             self._cam_orb_face_target  = float(self.FACE)
             self._webcam_photo  = None
             if self._cam_label is not None:
@@ -1511,11 +1454,9 @@ class JarvisUI:
         self.write_log(f"SYS: Webcam {'CANLI' if active else 'KAPALI'}")
 
     def update_webcam_preview(self, jpeg_bytes: bytes) -> None:
-        """Live webcam karesini dikdörtgen panel'de gösterir. Thread-safe."""
         self.root.after(0, lambda: self._show_webcam_preview(jpeg_bytes))
 
     def _show_webcam_preview(self, jpeg_bytes: bytes) -> None:
-        """JPEG'i üst-orta alana dikdörtgen Label olarak basar."""
         if not self._webcam_active:
             return
         try:
@@ -1523,15 +1464,14 @@ class JarvisUI:
             cam_w, cam_h, cam_x, cam_y, _, _ = self._calc_cam_layout()
 
             img   = Image.open(io.BytesIO(jpeg_bytes))
-            # Oranı koru, merkez crop ile 16:9'a getir
             iw, ih  = img.size
             target_ratio = cam_w / cam_h
             src_ratio    = iw / ih
-            if src_ratio > target_ratio:            # daha geniş → sol/sağ kırp
+            if src_ratio > target_ratio:
                 new_w = int(ih * target_ratio)
                 img   = img.crop(((iw - new_w) // 2, 0,
                                   (iw + new_w) // 2, ih))
-            else:                                   # daha uzun → üst/alt kırp
+            else:
                 new_h = int(iw / target_ratio)
                 img   = img.crop((0, (ih - new_h) // 2,
                                   iw, (ih + new_h) // 2))
@@ -1545,10 +1485,9 @@ class JarvisUI:
                     highlightbackground=C_MID,
                 )
             self._cam_label.configure(image=photo)
-            self._webcam_photo = photo          # referans tut — GC koruması
+            self._webcam_photo = photo
             self._cam_label.place(x=cam_x, y=cam_y,
                                   width=cam_w, height=cam_h)
-            # bg canvas'ın hemen üstüne taşı — settings paneli vs. üstte kalır
             self._cam_label.lift(self.bg)
         except Exception as exc:
             print(f"[UI] Webcam preview güncellenemedi: {exc}")
@@ -1658,7 +1597,7 @@ class JarvisUI:
         if self.speaking and t % 3 == 0:
             self._wave_jarvis = [random.randint(6, 30) for _ in range(18)]
         if self.user_speaking and t % 3 == 0:
-            self._wave_user = [random.randint(5, 24) for _ in range(18)]
+            self._wave_user   = [random.randint(5, 24) for _ in range(18)]
 
         if now - self.last_t > (0.12 if self.speaking else 0.50):
             if self.paused:
@@ -1682,7 +1621,6 @@ class JarvisUI:
         self.scale  += (self.target_scale - self.scale) * sp
         self.halo_a += (self.target_halo   - self.halo_a) * sp
 
-        # Kamera orb animasyonu — ~0.07 ease ≈ 400 ms settle @40ms frame
         _CE = 0.07
         self._cam_orb_shift += (self._cam_orb_shift_target - self._cam_orb_shift) * _CE
         self._cam_orb_face  += (self._cam_orb_face_target  - self._cam_orb_face)  * _CE
@@ -1690,7 +1628,6 @@ class JarvisUI:
             self._cam_orb_shift = self._cam_orb_shift_target
         if abs(self._cam_orb_face_target - self._cam_orb_face) < 0.5:
             self._cam_orb_face = self._cam_orb_face_target
-            # Kamera kapandıktan sonra animasyon bitince face'i temizle
             if not self._webcam_active:
                 self._cam_orb_face        = 0.0
                 self._cam_orb_face_target = 0.0
@@ -1704,7 +1641,6 @@ class JarvisUI:
         for i, spd in enumerate(spds):
             self.rings_spin[i] = (self.rings_spin[i] + spd) % 360
 
-        # Pulse rings
         pspd  = 4.2 if self.speaking else 1.8
         limit = self.FACE * 0.68
         self.pulse_r = [r + pspd for r in self.pulse_r if r + pspd < limit]
@@ -1721,7 +1657,6 @@ class JarvisUI:
         self._draw()
         self.root.after(40, self._animate)
 
-    # ── Yardımcı ─────────────────────────────────────────────────────────────
     @staticmethod
     def _ac(r, g, b, a):
         f = max(0, min(255, int(a))) / 255.0
@@ -1981,8 +1916,6 @@ class JarvisUI:
             move_y = int(2 * math.cos(t * 0.05 + 0.4))
 
         FCX  = self.FCX + move_x
-        # _cam_orb_shift her zaman uygulanır — animasyon hem açılışta hem
-        # kapanışta çalışır; kamera kapalıysa target=0 olduğundan doğal döner.
         FCY  = self.FCY + move_y + int(self._cam_orb_shift)
         base_face = (int(self._cam_orb_face) if self._cam_orb_face > 1.0 else self.FACE)
         FW   = int(base_face * self.scale * speak_pulse)
@@ -2006,7 +1939,6 @@ class JarvisUI:
         else:
             accent_rgb = (120, 255, 185)
 
-        # Pulse rings
         for pr in self.pulse_r:
             alpha = max(0, int(160 * (1.0 - pr / (FW * 0.70))))
             rr = int(pr + field_r * 0.96)
@@ -2016,7 +1948,6 @@ class JarvisUI:
                 width=1,
             )
 
-        # Large outer glow
         if not self.paused:
             for i in range(10, 0, -1):
                 frac = i / 10
@@ -2034,7 +1965,6 @@ class JarvisUI:
                     width=3,
                 )
 
-        # Structural circles — kamera açıkken gizle (webcam zaten üstünü kapatır)
         if not cam:
             for frac, width, alpha_mult in (
                 (1.00, 2, 0.34),
@@ -2050,7 +1980,6 @@ class JarvisUI:
                 )
 
         speak_shell_push = 1.16 if self.speaking else 1.07 if self.user_speaking else 1.0
-        # Orb shell particles
         shell_r = field_r * 0.93 * speak_shell_push
         for idx, sp in enumerate(self.orb_shell_particles):
             angle = sp['angle'] + t * sp['speed'] * (2.8 if self.speaking else 1.6 if self.user_speaking else 1.1)
@@ -2065,7 +1994,6 @@ class JarvisUI:
             pr = sp['size'] * (1.0 + 0.24 * math.sin(t * 0.05 + sp['phase']))
             c.create_oval(x-pr, y-pr, x+pr, y+pr, fill=col, outline="")
 
-        # Rotating segmented arcs — kamera açıkken gizle
         if not cam:
             arc_r1 = int(field_r * 0.96)
             arc_r2 = int(field_r * 0.78)
@@ -2086,7 +2014,6 @@ class JarvisUI:
                     outline=col, width=width, style="arc",
                 )
 
-        # Particle orb field
         field_limit = inner_r * (
             0.82 if self.paused else
             1.36 if self.speaking else
@@ -2128,180 +2055,4 @@ class JarvisUI:
                     width=1,
                 )
 
-        # Center void keeps the orb airy instead of lens-like.
-        void_r = int(inner_r * (0.18 if self.paused else 0.12))
-        if void_r > 0:
-            c.create_oval(
-                FCX-void_r, FCY-void_r, FCX+void_r, FCY+void_r,
-                fill=C_BG,
-                outline="",
-            )
-
-    # ── Ana çizim ─────────────────────────────────────────────────────────────
-    def _draw(self):
-        c  = self.bg
-        W  = self.W
-        H  = self.H
-        t  = self.tick
-        c.delete("all")
-
-        # ── Arka plan ────────────────────────────────────────────────────────
-        # Nokta ızgarası — 3 karede bir çiz, geniş adım → düşük yük
-        if t % 3 == 0:
-            step = 72
-            for x in range(0, W, step):
-                for y in range(0, H, step):
-                    c.create_rectangle(x, y, x+1, y+1, fill=C_DIMMER, outline="")
-
-        # Tarama çizgisi (yavaş, çok soluk)
-        scan_y = (t * 0.7) % (H + 60) - 30
-        for i in range(2):
-            ly = (scan_y + i * 20) % H
-            c.create_line(0, ly, W, ly+35, fill="#081818", width=1)
-
-        # Partiküller
-        R, G, B = self._orb_rgb()
-        for p in self.particles:
-            if self.speaking:
-                col = self._ac(255, 110, 0, p['a'])
-            else:
-                col = self._ac(R, G, B, p['a'])
-            r = p['r']
-            c.create_oval(p['x']-r, p['y']-r, p['x']+r, p['y']+r,
-                          fill=col, outline="")
-
-        # ── Bölücü çizgiler (ince, soluk) ────────────────────────────────────
-        c.create_line(self.LEFT_W, HDR_H, self.LEFT_W, H-FOOTER_H,
-                      fill=C_DIM, width=1)
-        c.create_line(W-self.RIGHT_W, HDR_H, W-self.RIGHT_W, H-FOOTER_H,
-                      fill=C_DIM, width=1)
-
-        # ── Yan paneller ──────────────────────────────────────────────────────
-        self._draw_left_panel(c)
-        self._draw_right_panel(c)
-
-        # ── Orb — kamera açıkken aşağı kayar, sert halkalar gizlenir ─────────
-        self._draw_orb(c, cam=self._webcam_active)
-
-        state_label = "PAUSED" if self.paused else self._jarvis_state
-        state_col = self._state_color(state_label)
-        c.create_text(self.FCX, self.CTRL_Y - 34, text=SYSTEM_NAME,
-                      fill=C_TEXT, font=font_display(18))
-        c.create_text(self.FCX, self.CTRL_Y - 12, text=f"● {state_label.title()}",
-                      fill=state_col, font=font_body_bold(11))
-
-        # ── HEADER ───────────────────────────────────────────────────────────
-        c.create_rectangle(0, 0, W, HDR_H, fill="#010a0a", outline="")
-        # Alt çizgi — teal parlak
-        c.create_line(0, HDR_H, W, HDR_H, fill=C_MID, width=1)
-        for i in range(3):
-            a = 60 - i * 18
-            c.create_line(0, HDR_H-1-i, W, HDR_H-1-i,
-                          fill=self._ac(0, 180, 165, a), width=1)
-
-        # Büyük başlık
-        c.create_text(W//2, 24, text=SYSTEM_NAME,
-                      fill=C_PRI, font=font_display(26))
-        c.create_text(W//2, 52, text="Just A Rather Very Intelligent System",
-                      fill=C_MID, font=font_body(11))
-
-        # Sol: model badge
-        c.create_text(22, 36, text=MODEL_BADGE,
-                      fill=C_DIM, font=font_body(10), anchor="w")
-
-        # Sağ: durum indikatörü
-        indicator_state = "PAUSED" if self.paused else self._jarvis_state
-        ind_col = self._state_color(indicator_state)
-        indicator_text = self._state_badge_text(indicator_state)
-        sym = "●" if self.status_blink else "○"
-        c.create_text(W-22, 28, text=f"{sym}  {indicator_text}",
-                      fill=ind_col, font=font_body_bold(11), anchor="e")
-
-        # Webcam canlı yayın göstergesi
-        if self._webcam_active:
-            cam_blink = "●" if self.status_blink else "◉"
-            c.create_text(W-22, 52, text=f"{cam_blink}  CAM LIVE",
-                          fill=C_RED, font=font_body_bold(9), anchor="e")
-
-        # ── FOOTER ───────────────────────────────────────────────────────────
-        c.create_rectangle(0, H-FOOTER_H, W, H, fill="#010a0a", outline="")
-        c.create_line(0, H-FOOTER_H, W, H-FOOTER_H, fill=C_DIM, width=1)
-        c.create_text(W//2, H-13, fill=C_DIM, font=font_body(9),
-                      text="JARVIS · Windows Edition · Realtime Voice Core")
-        c.create_text(W-18, H-13, fill=C_DIM, font=font_body(9),
-                      text="[F4] MUTE  [F5] PAUSE  [F6] CAM  [F11] FULLSCREEN  [ESC] EXIT/WINDOWED", anchor="e")
-
-    def wait_for_api_key(self):
-        while not self._api_key_ready:
-            time.sleep(0.1)
-
-    def _show_setup_ui(self, edit_mode: bool = False):
-        self._close_setup_ui()
-
-        self.setup_frame = tk.Frame(self.root, bg="#00080d",
-                                    highlightbackground=C_PRI,
-                                    highlightthickness=1)
-        self.setup_frame.place(relx=0.5, rely=0.5, anchor="center")
-
-        title = "◈ API AYARLARI" if edit_mode else "◈ İLK KURULUM GEREKLİ"
-        subtitle = (
-            "Gemini API anahtarinizi guncelleyin."
-            if edit_mode else
-            "Gemini API anahtarinizi girin."
-        )
-        config = load_app_config()
-
-        tk.Label(self.setup_frame, text=title,
-                 fg=C_PRI, bg="#00080d", font=font_display(16)).pack(pady=(18, 4))
-        tk.Label(self.setup_frame, text=subtitle,
-                 fg=C_MID, bg="#00080d", font=font_body(11)).pack(pady=(0, 10))
-        tk.Label(self.setup_frame, text="GEMINI API KEY",
-                 fg=C_DIM, bg="#00080d", font=font_body(11)).pack(pady=(8, 2))
-
-        self.api_entry = tk.Entry(
-            self.setup_frame, width=52,
-            fg=C_TEXT, bg="#000d12", insertbackground=C_TEXT,
-            borderwidth=0, font=font_body(12), show="*")
-        self.api_entry.pack(pady=(0, 6))
-
-        current_key = str(config.get("gemini_api_key", "") or "")
-        if current_key:
-            self.api_entry.insert(0, current_key)
-
-        buttons = tk.Frame(self.setup_frame, bg="#00080d")
-        buttons.pack(pady=14)
-
-        tk.Button(buttons, text="▸ KAYDET",
-                  command=self._save_api_key, bg=C_BG, fg=C_PRI,
-                  activebackground="#003344", font=font_body_bold(12),
-                  borderwidth=0, padx=18, pady=8).pack(side="left", padx=6)
-
-        if edit_mode:
-            tk.Button(buttons, text="KAPAT",
-                      command=self._close_setup_ui, bg="#08111a", fg=C_DIM,
-                      activebackground="#10202b", font=font_body_bold(12),
-                      borderwidth=0, padx=18, pady=8).pack(side="left", padx=6)
-
-    def _save_api_key(self):
-        was_ready = self._api_key_ready
-        key = self.api_entry.get().strip() if self.api_entry else ""
-        if not key:
-            return
-        youtube_key = self.youtube_api_entry.get().strip() if self.youtube_api_entry else ""
-        youtube_handle = self.youtube_handle_entry.get().strip() if self.youtube_handle_entry else ""
-        save_app_config(
-            {
-                "gemini_api_key": key,
-                "youtube_api_key": youtube_key,
-                "youtube_channel_handle": youtube_handle,
-                "voice": self._current_voice,
-            }
-        )
-        self._close_setup_ui()
-        self._api_key_ready = True
-        self._refresh_settings_status()
-        if was_ready:
-            self.write_log("SYS: API ayarlari guncellendi.")
-        else:
-            self.set_state("LISTENING")
-            self.write_log("SYS: JARVIS hazır. Dinliyorum...")
+        void_r = int(inner_r * (0.18 if self.paused else 0.1))
