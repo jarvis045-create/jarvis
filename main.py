@@ -23,7 +23,7 @@ from tool_defs import TOOL_DECLARATIONS
 BASE_DIR = Path(__file__).resolve().parent
 PROMPT_PATH = BASE_DIR / "core" / "prompt.txt"
 
-app = FastAPI(title="Seymur's J.A.R.V.I.S. Cloud Core")
+app = FastAPI(title="J.A.R.V.I.S. Cloud Core")
 
 LIVE_MODEL = "models/gemini-2.5-flash-native-audio-latest"
 
@@ -35,7 +35,7 @@ def load_system_prompt() -> str:
         return PROMPT_PATH.read_text(encoding="utf-8")
     except Exception:
         return (
-            "Sen Seymur'un JARVIS'isin — Bulutta çalışan kişisel AI asistanısın. "
+            "Sen JARVIS'sin — Bulutta çalışan kişisel AI asistanısın. "
             "Türkçe konuş. Kısa ve net yanıtlar ver. "
             "Araçları kullanarak görevleri tamamla."
         )
@@ -50,87 +50,235 @@ HTML_TEMPLATE = """
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
     <title>Seymur's J.A.R.V.I.S.</title>
     <style>
+        :root {
+            --c-bg: #030712;
+            --c-pri: #00f0ff;
+            --c-mid: #005f73;
+            --c-text: #e0fbfc;
+            --c-green: #06d6a0;
+            --c-blue: #3a86ff;
+            --c-gold: #ffd166;
+            --c-red: #ef476f;
+        }
+
         body {
-            background-color: #030712;
-            color: #ffffff;
-            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+            background-color: var(--c-bg);
+            color: var(--c-text);
+            font-family: 'Courier New', Courier, monospace;
+            margin: 0;
+            padding: 15px;
+            display: flex;
+            flex-direction: column;
+            height: 94vh;
+            box-sizing: border-box;
+            overflow: hidden;
+        }
+
+        .header {
+            text-align: center;
+            border-bottom: 1px solid var(--c-mid);
+            padding-bottom: 10px;
+            margin-bottom: 10px;
+        }
+
+        .header h2 {
+            margin: 0;
+            color: var(--c-pri);
+            font-size: 22px;
+            letter-spacing: 2px;
+            text-shadow: 0 0 10px rgba(0, 240, 255, 0.4);
+        }
+
+        .header .status-sub {
+            font-size: 11px;
+            color: var(--c-mid);
+            margin-top: 4px;
+            letter-spacing: 1px;
+        }
+
+        .main-container {
+            flex: 1;
             display: flex;
             flex-direction: column;
             align-items: center;
             justify-content: center;
-            height: 100vh;
-            margin: 0;
-            overflow: hidden;
+            position: relative;
         }
-        h1 {
-            color: #00f3ff;
-            font-size: 24px;
-            letter-spacing: 2px;
-            margin-bottom: 5px;
-        }
-        #status {
-            color: #94a3b8;
-            font-size: 14px;
-            margin-bottom: 40px;
-        }
-        .reactor {
+
+        /* ARC REACTOR BUTTON */
+        .arc-reactor {
             width: 180px;
             height: 180px;
+            border: 2px dashed var(--c-pri);
             border-radius: 50%;
-            background: #0055ff;
-            border: 3px solid #00f3ff;
             display: flex;
             align-items: center;
             justify-content: center;
+            position: relative;
+            animation: spin 15s linear infinite;
+            box-shadow: 0 0 25px rgba(0, 240, 255, 0.25);
+            margin: 15px 0;
             cursor: pointer;
-            box-shadow: 0 0 30px rgba(0, 243, 255, 0.4);
-            transition: all 0.3s ease;
+            background: rgba(0, 240, 255, 0.03);
         }
-        .reactor.active {
-            background: #00ff55;
-            box-shadow: 0 0 40px rgba(0, 255, 85, 0.6);
+
+        .arc-reactor::before {
+            content: '';
+            position: absolute;
+            width: 140px;
+            height: 140px;
+            border: 1px solid var(--c-mid);
+            border-radius: 50%;
+            animation: spin-reverse 10s linear infinite;
         }
-        .reactor span {
+
+        .inner-core {
+            width: 90px;
+            height: 90px;
+            border: 2px solid var(--c-pri);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: inset 0 0 15px rgba(0, 240, 255, 0.5);
+        }
+
+        .core-dot {
+            width: 60px;
+            height: 60px;
+            background-color: var(--c-pri);
+            border-radius: 50%;
+            box-shadow: 0 0 20px var(--c-pri);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--c-bg);
             font-weight: bold;
-            font-size: 16px;
-            letter-spacing: 1px;
+            font-size: 11px;
+            transition: all 0.3s ease;
+            text-align: center;
         }
-        #log {
-            margin-top: 30px;
-            width: 85%;
-            max-width: 350px;
-            height: 100px;
-            background: rgba(255, 255, 255, 0.05);
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            border-radius: 10px;
+
+        .core-dot.listening { background-color: var(--c-green); box-shadow: 0 0 30px var(--c-green); }
+        .core-dot.speaking { background-color: var(--c-blue); box-shadow: 0 0 30px var(--c-blue); }
+        .core-dot.thinking { background-color: var(--c-gold); box-shadow: 0 0 30px var(--c-gold); }
+        .core-dot.error { background-color: var(--c-red); box-shadow: 0 0 30px var(--c-red); }
+
+        @keyframes spin { 100% { transform: rotate(360deg); } }
+        @keyframes spin-reverse { 100% { transform: rotate(-360deg); } }
+
+        .chat-box {
+            width: 100%;
+            height: 120px;
+            background: rgba(2, 6, 23, 0.9);
+            border: 1px solid var(--c-mid);
+            border-radius: 6px;
             padding: 10px;
-            font-size: 12px;
             overflow-y: auto;
+            font-size: 11px;
+            margin-bottom: 12px;
+            box-sizing: border-box;
             color: #38bdf8;
+        }
+
+        .chat-box div {
+            margin-bottom: 6px;
+            line-height: 1.3;
+        }
+
+        .controls {
+            display: flex;
+            gap: 8px;
+            width: 100%;
+        }
+
+        input {
+            flex: 1;
+            background: #020617;
+            border: 1px solid var(--c-mid);
+            color: var(--c-text);
+            padding: 10px;
+            border-radius: 4px;
+            font-family: inherit;
+            font-size: 13px;
+        }
+
+        input:focus {
+            border-color: var(--c-pri);
+            outline: none;
+            box-shadow: 0 0 8px rgba(0, 240, 255, 0.3);
+        }
+
+        button {
+            background: var(--c-mid);
+            color: var(--c-text);
+            border: 1px solid var(--c-pri);
+            padding: 10px 14px;
+            font-weight: bold;
+            border-radius: 4px;
+            cursor: pointer;
+            font-family: inherit;
+        }
+
+        button:active {
+            background: var(--c-pri);
+            color: var(--c-bg);
         }
     </style>
 </head>
 <body>
-    <h1>Seymur's J.A.R.V.I.S.</h1>
-    <div id="status">Bağlantı kuruluyor...</div>
-    
-    <div class="reactor" id="reactor" onclick="toggleListening()">
-        <span id="btnText">BAĞLAN</span>
+
+    <div class="header">
+        <h2>Seymur's J.A.R.V.I.S.</h2>
+        <div class="status-sub" id="status-text">Bağlantı kuruluyor...</div>
     </div>
 
-    <div id="log">Sistem hazır bekleniyor...</div>
+    <div class="main-container">
+        <!-- Reaktor (Tıklayınca Oturum Başlatır/Durdurur) -->
+        <div class="arc-reactor" onclick="toggleListening()">
+            <div class="inner-core">
+                <div class="core-dot" id="core-dot">BAĞLAN</div>
+            </div>
+        </div>
+
+        <div class="chat-box" id="log">
+            <div>Sistem hazır bekleniyor...</div>
+        </div>
+    </div>
+
+    <div class="controls">
+        <input type="text" id="cmd-input" placeholder="Komut yazın..." onkeypress="checkEnter(event)">
+        <button onclick="sendCmdText()">GÖNDER</button>
+    </div>
 
     <script>
         let ws = null;
         let isListening = false;
-        const statusEl = document.getElementById("status");
-        const btnText = document.getElementById("btnText");
-        const reactor = document.getElementById("reactor");
+        const statusEl = document.getElementById("status-text");
+        const coreDot = document.getElementById("core-dot");
         const logEl = document.getElementById("log");
+        const cmdInput = document.getElementById("cmd-input");
 
-        function log(msg) {
-            logEl.innerHTML += "<br>" + msg;
+        function log(msg, type="pri") {
+            let col = "#38bdf8";
+            if(type === "sys") col = "#ffd166";
+            if(type === "you") col = "#00f0ff";
+            if(type === "err") col = "#ef476f";
+            
+            logEl.innerHTML += `<div style="color:${col}">` + msg + `</div>`;
             logEl.scrollTop = logEl.scrollHeight;
+        }
+
+        function setCoreState(state) {
+            coreDot.className = "core-dot " + state.toLowerCase();
+            if(state === "LISTENING") coreDot.innerText = "DİNLİYOR";
+            else if(state === "THINKING") coreDot.innerText = "DÜŞÜN";
+            else if(state === "SPEAKING") coreDot.innerText = "KONUŞ";
+            else if(state === "ERROR") coreDot.innerText = "HATA";
+            else if(state === "ONLINE") coreDot.innerText = "DİNLE";
+            else coreDot.innerText = "BAĞLAN";
+            
+            statusEl.innerText = "SİSTEM // " + state;
         }
 
         function connect() {
@@ -139,19 +287,20 @@ HTML_TEMPLATE = """
 
             ws.onopen = () => {
                 statusEl.innerText = "Sistem Aktif - Hazır";
-                btnText.innerText = "DİNLE";
-                log("Bulut bağlantısı sağlandı.");
+                setCoreState("ONLINE");
+                log("Bulut bağlantısı sağlandı.", "sys");
             };
 
             ws.onclose = () => {
                 statusEl.innerText = "Bağlantı koptu, yeniden bağlanılıyor...";
-                btnText.innerText = "YENİDEN";
-                reactor.classList.remove("active");
+                setCoreState("ERROR");
                 setTimeout(connect, 3000);
             };
 
             ws.onmessage = (event) => {
-                log("JARVIS: " + event.data);
+                setCoreState("SPEAKING");
+                log("JARVIS: " + event.data, "pri");
+                setTimeout(() => setCoreState("ONLINE"), 1500);
             };
         }
 
@@ -159,14 +308,26 @@ HTML_TEMPLATE = """
             if (!ws || ws.readyState !== WebSocket.OPEN) return;
             isListening = !isListening;
             if (isListening) {
-                reactor.classList.add("active");
-                statusEl.innerText = "Dinleniyor...";
+                setCoreState("LISTENING");
                 ws.send(JSON.stringify({type: "start_session"}));
             } else {
-                reactor.classList.remove("active");
-                statusEl.innerText = "Durduruldu.";
+                setCoreState("ONLINE");
                 ws.send(JSON.stringify({type: "stop_session"}));
             }
+        }
+
+        function sendCmdText() {
+            const val = cmdInput.value.trim();
+            if(!val) return;
+            log("Siz: " + val, "you");
+            cmdInput.value = "";
+            setCoreState("THINKING");
+            // İstersen metin komutlarını buraya ekleyebilirsin
+            setTimeout(() => setCoreState("ONLINE"), 1000);
+        }
+
+        function checkEnter(e) {
+            if(e.key === 'Enter') sendCmdText();
         }
 
         connect();
@@ -209,7 +370,7 @@ async def websocket_endpoint(websocket: WebSocket):
                 
                 if packet.get("type") == "start_session":
                     await session.send_client_content(
-                        turns={"parts": [{"text": "Sistem aktif, Seymur seni tetikledi."}]},
+                        turns={"parts": [{"text": "Sistem aktif, kullanıcı seni tetikledi."}]},
                         turn_complete=True
                     )
                     
