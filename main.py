@@ -46,7 +46,7 @@ HTML_TEMPLATE = """
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Seymur's J.A.R.V.I.S.</title>
+    <title>J.A.R.V.I.S // WINDOWS VOICE CORE</title>
     <style>
         :root {
             --c-bg: #020c0c;
@@ -98,8 +98,8 @@ HTML_TEMPLATE = """
         }
 
         .arc-reactor {
-            width: 200px;
-            height: 200px;
+            width: 240px;
+            height: 240px;
             border: 2px dashed var(--c-pri);
             border-radius: 50%;
             display: flex;
@@ -115,16 +115,16 @@ HTML_TEMPLATE = """
         .arc-reactor::before {
             content: '';
             position: absolute;
-            width: 160px;
-            height: 160px;
+            width: 200px;
+            height: 200px;
             border: 1px solid var(--c-mid);
             border-radius: 50%;
             animation: spin-reverse 12s linear infinite;
         }
 
         .inner-core {
-            width: 110px;
-            height: 110px;
+            width: 130px;
+            height: 130px;
             border: 2px solid var(--c-pri);
             border-radius: 50%;
             display: flex;
@@ -134,8 +134,8 @@ HTML_TEMPLATE = """
         }
 
         .core-dot {
-            width: 40px;
-            height: 40px;
+            width: 35px;
+            height: 35px;
             background-color: var(--c-pri);
             border-radius: 50%;
             box-shadow: 0 0 20px var(--c-pri);
@@ -224,7 +224,7 @@ HTML_TEMPLATE = """
 <body>
 
     <div class="header">
-        <span>SEYMUR'S J.A.R.V.I.S.</span>
+        <span>J.A.R.V.I.S // CORE</span>
         <span class="badge" id="status-text">ONLINE</span>
     </div>
 
