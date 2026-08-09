@@ -4,7 +4,6 @@ import asyncio
 import datetime
 import json
 import os
-import re
 from pathlib import Path
 
 from fastapi import FastAPI, WebSocket, WebSocketDisconnect
@@ -41,7 +40,6 @@ def load_system_prompt() -> str:
             "Araçları kullanarak görevleri tamamla."
         )
 
-# ── FÜTÜRİSTİK WEB ARAYÜZÜ (Telefon Safari Uyumlu PWA) ──
 HTML_TEMPLATE = """
 <!DOCTYPE html>
 <html lang="tr">
