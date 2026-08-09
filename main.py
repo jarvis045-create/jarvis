@@ -45,20 +45,19 @@ HTML_TEMPLATE = """
 <html lang="tr">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <meta name="apple-mobile-web-app-capable" content="yes">
-    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Seymur's J.A.R.V.I.S.</title>
     <style>
         :root {
-            --c-bg: #030712;
-            --c-pri: #00f0ff;
-            --c-mid: #005f73;
-            --c-text: #e0fbfc;
-            --c-green: #06d6a0;
-            --c-blue: #3a86ff;
-            --c-gold: #ffd166;
-            --c-red: #ef476f;
+            --c-bg: #020c0c;
+            --c-pri: #00d4c0;
+            --c-mid: #006a62;
+            --c-dim: #0a2a28;
+            --c-text: #7dfff6;
+            --c-green: #00ff88;
+            --c-blue: #4488ff;
+            --c-gold: #ffcc00;
+            --c-red: #ff3344;
         }
 
         body {
@@ -66,34 +65,27 @@ HTML_TEMPLATE = """
             color: var(--c-text);
             font-family: 'Courier New', Courier, monospace;
             margin: 0;
-            padding: 15px;
+            padding: 10px;
             display: flex;
             flex-direction: column;
-            height: 94vh;
+            height: 98vh;
             box-sizing: border-box;
             overflow: hidden;
         }
 
         .header {
-            text-align: center;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
             border-bottom: 1px solid var(--c-mid);
-            padding-bottom: 10px;
-            margin-bottom: 10px;
-        }
-
-        .header h2 {
-            margin: 0;
-            color: var(--c-pri);
-            font-size: 22px;
-            letter-spacing: 2px;
-            text-shadow: 0 0 10px rgba(0, 240, 255, 0.4);
-        }
-
-        .header .status-sub {
-            font-size: 11px;
-            color: var(--c-mid);
-            margin-top: 4px;
+            padding-bottom: 8px;
+            font-size: 13px;
             letter-spacing: 1px;
+        }
+
+        .header .badge {
+            color: var(--c-pri);
+            font-weight: bold;
         }
 
         .main-container {
@@ -105,100 +97,89 @@ HTML_TEMPLATE = """
             position: relative;
         }
 
-        /* ARC REACTOR BUTTON */
         .arc-reactor {
-            width: 180px;
-            height: 180px;
+            width: 200px;
+            height: 200px;
             border: 2px dashed var(--c-pri);
             border-radius: 50%;
             display: flex;
             align-items: center;
             justify-content: center;
             position: relative;
-            animation: spin 15s linear infinite;
-            box-shadow: 0 0 25px rgba(0, 240, 255, 0.25);
-            margin: 15px 0;
+            animation: spin 18s linear infinite;
+            box-shadow: 0 0 25px rgba(0, 212, 192, 0.2);
+            margin: 10px 0;
             cursor: pointer;
-            background: rgba(0, 240, 255, 0.03);
         }
 
         .arc-reactor::before {
             content: '';
             position: absolute;
-            width: 140px;
-            height: 140px;
+            width: 160px;
+            height: 160px;
             border: 1px solid var(--c-mid);
             border-radius: 50%;
-            animation: spin-reverse 10s linear infinite;
+            animation: spin-reverse 12s linear infinite;
         }
 
         .inner-core {
-            width: 90px;
-            height: 90px;
+            width: 110px;
+            height: 110px;
             border: 2px solid var(--c-pri);
             border-radius: 50%;
             display: flex;
             align-items: center;
             justify-content: center;
-            box-shadow: inset 0 0 15px rgba(0, 240, 255, 0.5);
+            box-shadow: inset 0 0 20px rgba(0, 212, 192, 0.4);
         }
 
         .core-dot {
-            width: 60px;
-            height: 60px;
+            width: 40px;
+            height: 40px;
             background-color: var(--c-pri);
             border-radius: 50%;
             box-shadow: 0 0 20px var(--c-pri);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: var(--c-bg);
-            font-weight: bold;
-            font-size: 11px;
-            transition: all 0.3s ease;
-            text-align: center;
+            transition: background-color 0.3s, box-shadow 0.3s;
         }
 
-        .core-dot.listening { background-color: var(--c-green); box-shadow: 0 0 30px var(--c-green); }
-        .core-dot.speaking { background-color: var(--c-blue); box-shadow: 0 0 30px var(--c-blue); }
-        .core-dot.thinking { background-color: var(--c-gold); box-shadow: 0 0 30px var(--c-gold); }
-        .core-dot.error { background-color: var(--c-red); box-shadow: 0 0 30px var(--c-red); }
+        .core-dot.listening { background-color: var(--c-green); box-shadow: 0 0 25px var(--c-green); }
+        .core-dot.speaking { background-color: var(--c-blue); box-shadow: 0 0 25px var(--c-blue); }
+        .core-dot.thinking { background-color: var(--c-gold); box-shadow: 0 0 25px var(--c-gold); }
 
         @keyframes spin { 100% { transform: rotate(360deg); } }
         @keyframes spin-reverse { 100% { transform: rotate(-360deg); } }
 
         .chat-box {
             width: 100%;
-            height: 120px;
-            background: rgba(2, 6, 23, 0.9);
+            flex: 1;
+            background: rgba(3, 15, 15, 0.8);
             border: 1px solid var(--c-mid);
-            border-radius: 6px;
+            border-radius: 2px;
             padding: 10px;
             overflow-y: auto;
-            font-size: 11px;
-            margin-bottom: 12px;
-            box-sizing: border-box;
-            color: #38bdf8;
+            font-size: 12px;
+            margin-bottom: 10px;
+            max-height: 160px;
         }
 
         .chat-box div {
             margin-bottom: 6px;
-            line-height: 1.3;
+            line-height: 1.4;
         }
 
         .controls {
             display: flex;
-            gap: 8px;
+            gap: 6px;
             width: 100%;
         }
 
         input {
             flex: 1;
-            background: #020617;
+            background: #020c0c;
             border: 1px solid var(--c-mid);
             color: var(--c-text);
             padding: 10px;
-            border-radius: 4px;
+            border-radius: 2px;
             font-family: inherit;
             font-size: 13px;
         }
@@ -206,7 +187,6 @@ HTML_TEMPLATE = """
         input:focus {
             border-color: var(--c-pri);
             outline: none;
-            box-shadow: 0 0 8px rgba(0, 240, 255, 0.3);
         }
 
         button {
@@ -215,7 +195,7 @@ HTML_TEMPLATE = """
             border: 1px solid var(--c-pri);
             padding: 10px 14px;
             font-weight: bold;
-            border-radius: 4px;
+            border-radius: 2px;
             cursor: pointer;
             font-family: inherit;
         }
@@ -224,113 +204,163 @@ HTML_TEMPLATE = """
             background: var(--c-pri);
             color: var(--c-bg);
         }
+
+        button.mic-btn {
+            background: #1a0808;
+            border-color: var(--c-red);
+            color: var(--c-red);
+            font-size: 16px;
+        }
+
+        button.mic-btn.listening {
+            background: var(--c-red);
+            color: white;
+            animation: pulse 1s infinite;
+        }
+
+        @keyframes pulse { 0% { opacity: 1; } 50% { opacity: 0.4; } 100% { opacity: 1; } }
     </style>
 </head>
 <body>
 
     <div class="header">
-        <h2>Seymur's J.A.R.V.I.S.</h2>
-        <div class="status-sub" id="status-text">Bağlantı kuruluyor...</div>
+        <span>SEYMUR'S J.A.R.V.I.S.</span>
+        <span class="badge" id="status-text">ONLINE</span>
     </div>
 
     <div class="main-container">
-        <!-- Reaktor (Tıklayınca Oturum Başlatır/Durdurur) -->
-        <div class="arc-reactor" onclick="toggleListening()">
+        <div class="arc-reactor" onclick="toggleMic()">
             <div class="inner-core">
-                <div class="core-dot" id="core-dot">BAĞLAN</div>
+                <div class="core-dot" id="core-dot"></div>
             </div>
         </div>
 
-        <div class="chat-box" id="log">
-            <div>Sistem hazır bekleniyor...</div>
+        <div class="chat-box" id="chat-box">
+            <div><span style="color:var(--c-gold)">[SYS]</span> J.A.R.V.I.S Bulut Çekirdeği Aktif. Dinlemedeyim...</div>
         </div>
     </div>
 
     <div class="controls">
-        <input type="text" id="cmd-input" placeholder="Komut yazın..." onkeypress="checkEnter(event)">
-        <button onclick="sendCmdText()">GÖNDER</button>
+        <input type="text" id="cmd-input" placeholder="Sistem komutu girin..." onkeypress="checkEnter(event)">
+        <button id="mic-btn" class="mic-btn" onclick="toggleMic()">🎤</button>
+        <button onclick="sendCmd()">GÖNDER</button>
     </div>
 
     <script>
         let ws = null;
-        let isListening = false;
-        const statusEl = document.getElementById("status-text");
-        const coreDot = document.getElementById("core-dot");
-        const logEl = document.getElementById("log");
+        const chatBox = document.getElementById("chat-box");
         const cmdInput = document.getElementById("cmd-input");
+        const micBtn = document.getElementById("mic-btn");
+        const coreDot = document.getElementById("core-dot");
+        const statusText = document.getElementById("status-text");
 
-        function log(msg, type="pri") {
-            let col = "#38bdf8";
-            if(type === "sys") col = "#ffd166";
-            if(type === "you") col = "#00f0ff";
-            if(type === "err") col = "#ef476f";
+        function connectWs() {
+            const proto = location.protocol === "https:" ? "wss://" : "ws://";
+            ws = new WebSocket(proto + location.host + "/ws");
+            ws.onmessage = (event) => {
+                setCoreState("SPEAKING");
+                appendLog("JARVIS", event.data, "pri");
+                speak(event.data);
+            };
+            ws.onclose = () => setTimeout(connectWs, 3000);
+        }
+        connectWs();
+
+        function appendLog(sender, text, type="pri") {
+            const div = document.createElement("div");
+            let col = "var(--c-text)";
+            if(type === "sys") col = "var(--c-gold)";
+            if(type === "you") col = "#d0f0ee";
+            if(type === "err") col = "var(--c-red)";
             
-            logEl.innerHTML += `<div style="color:${col}">` + msg + `</div>`;
-            logEl.scrollTop = logEl.scrollHeight;
+            div.innerHTML = `<strong style="color:${col}">[${new Date().toLocaleTimeString()}] ${sender}:</strong> ${text}`;
+            chatBox.appendChild(div);
+            chatBox.scrollTop = chatBox.scrollHeight;
         }
 
         function setCoreState(state) {
             coreDot.className = "core-dot " + state.toLowerCase();
-            if(state === "LISTENING") coreDot.innerText = "DİNLİYOR";
-            else if(state === "THINKING") coreDot.innerText = "DÜŞÜN";
-            else if(state === "SPEAKING") coreDot.innerText = "KONUŞ";
-            else if(state === "ERROR") coreDot.innerText = "HATA";
-            else if(state === "ONLINE") coreDot.innerText = "DİNLE";
-            else coreDot.innerText = "BAĞLAN";
-            
-            statusEl.innerText = "SİSTEM // " + state;
+            statusText.innerText = state;
         }
 
-        function connect() {
-            const proto = location.protocol === "https:" ? "wss://" : "ws://";
-            ws = new WebSocket(proto + location.host + "/ws");
+        function sendCmd() {
+            const text = cmdInput.value.trim();
+            if(!text) return;
+            appendLog("Siz", text, "you");
+            cmdInput.value = "";
 
-            ws.onopen = () => {
-                statusEl.innerText = "Sistem Aktif - Hazır";
-                setCoreState("ONLINE");
-                log("Bulut bağlantısı sağlandı.", "sys");
-            };
-
-            ws.onclose = () => {
-                statusEl.innerText = "Bağlantı koptu, yeniden bağlanılıyor...";
-                setCoreState("ERROR");
-                setTimeout(connect, 3000);
-            };
-
-            ws.onmessage = (event) => {
-                setCoreState("SPEAKING");
-                log("JARVIS: " + event.data, "pri");
-                setTimeout(() => setCoreState("ONLINE"), 1500);
-            };
-        }
-
-        function toggleListening() {
-            if (!ws || ws.readyState !== WebSocket.OPEN) return;
-            isListening = !isListening;
-            if (isListening) {
-                setCoreState("LISTENING");
-                ws.send(JSON.stringify({type: "start_session"}));
+            setCoreState("THINKING");
+            if (ws && ws.readyState === WebSocket.OPEN) {
+                ws.send(JSON.stringify({type: "start_session", command: text}));
             } else {
+                appendLog("ERR", "Websocket bağlı değil!", "err");
                 setCoreState("ONLINE");
-                ws.send(JSON.stringify({type: "stop_session"}));
             }
         }
 
-        function sendCmdText() {
-            const val = cmdInput.value.trim();
-            if(!val) return;
-            log("Siz: " + val, "you");
-            cmdInput.value = "";
-            setCoreState("THINKING");
-            // İstersen metin komutlarını buraya ekleyebilirsin
-            setTimeout(() => setCoreState("ONLINE"), 1000);
-        }
-
         function checkEnter(e) {
-            if(e.key === 'Enter') sendCmdText();
+            if(e.key === 'Enter') sendCmd();
         }
 
-        connect();
+        function speak(text) {
+            if ('speechSynthesis' in window) {
+                window.speechSynthesis.cancel();
+                const utterance = new SpeechSynthesisUtterance(text);
+                utterance.lang = 'tr-TR';
+                utterance.onend = () => setCoreState("ONLINE");
+                window.speechSynthesis.speak(utterance);
+            } else {
+                setCoreState("ONLINE");
+            }
+        }
+
+        let recognition;
+        let isListening = false;
+        if ('webkitSpeechRecognition' in window || 'SpeechRecognition' in window) {
+            const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+            recognition = new SpeechRecognition();
+            recognition.lang = 'tr-TR';
+            recognition.continuous = false;
+
+            recognition.onresult = function(event) {
+                const speechToText = event.results[0][0].transcript;
+                cmdInput.value = speechToText;
+                micBtn.classList.remove("listening");
+                isListening = false;
+                setCoreState("ONLINE");
+                sendCmd();
+            };
+
+            recognition.onerror = function() {
+                micBtn.classList.remove("listening");
+                isListening = false;
+                setCoreState("ONLINE");
+            };
+
+            recognition.onend = function() {
+                micBtn.classList.remove("listening");
+                isListening = false;
+                if(statusText.innerText === "LISTENING") setCoreState("ONLINE");
+            };
+        }
+
+        function toggleMic() {
+            if (!recognition) {
+                alert("Tarayıcınız ses tanımayı desteklemiyor.");
+                return;
+            }
+            if (isListening) {
+                recognition.stop();
+                micBtn.classList.remove("listening");
+                isListening = false;
+                setCoreState("ONLINE");
+            } else {
+                recognition.start();
+                micBtn.classList.add("listening");
+                isListening = true;
+                setCoreState("LISTENING");
+            }
+        }
     </script>
 </body>
 </html>
@@ -368,37 +398,37 @@ async def websocket_endpoint(websocket: WebSocket):
                 data = await websocket.receive_text()
                 packet = json.loads(data)
                 
-                if packet.get("type") == "start_session":
-                    await session.send_client_content(
-                        turns={"parts": [{"text": "Sistem aktif, kullanıcı seni tetikledi."}]},
-                        turn_complete=True
-                    )
+                user_msg = packet.get("command") or "Sistem aktif, kullanıcı seni tetikledi."
+                await session.send_client_content(
+                    turns={"parts": [{"text": user_msg}]},
+                    turn_complete=True
+                )
+                
+                async for response in session.receive():
+                    if response.server_content and response.server_content.model_turn:
+                        for part in response.server_content.model_turn.parts:
+                            if part.text:
+                                await websocket.send_text(part.text)
                     
-                    async for response in session.receive():
-                        if response.server_content and response.server_content.model_turn:
-                            for part in response.server_content.model_turn.parts:
-                                if part.text:
-                                    await websocket.send_text(part.text)
-                        
-                        if response.tool_call:
-                            for fc in response.tool_call.function_calls:
-                                name = fc.name
-                                args = dict(fc.args or {})
-                                result = "Tamamlandı."
-                                
-                                if name == "sys_info":
-                                    result = sys_info(args.get("query", "all"))
-                                elif name == "get_weather":
-                                    result = get_weather_summary(args.get("location") or None)
-                                elif name == "get_calendar_events":
-                                    result = get_calendar_events(args.get("query", "today"), int(args.get("limit", 6) or 6))
-                                elif name == "get_reminders":
-                                    result = get_reminders(args.get("query", "upcoming"), int(args.get("limit", 8) or 8))
-                                
-                                await session.send_tool_response(
-                                    function_responses=[types.FunctionResponse(id=fc.id, name=name, response={"result": result})]
-                                )
-                                await websocket.send_text(f"İşlem yapıldı: {name}")
+                    if response.tool_call:
+                        for fc in response.tool_call.function_calls:
+                            name = fc.name
+                            args = dict(fc.args or {})
+                            result = "Tamamlandı."
+                            
+                            if name == "sys_info":
+                                result = sys_info(args.get("query", "all"))
+                            elif name == "get_weather":
+                                result = get_weather_summary(args.get("location") or None)
+                            elif name == "get_calendar_events":
+                                result = get_calendar_events(args.get("query", "today"), int(args.get("limit", 6) or 6))
+                            elif name == "get_reminders":
+                                result = get_reminders(args.get("query", "upcoming"), int(args.get("limit", 8) or 8))
+                            
+                            await session.send_tool_response(
+                                function_responses=[types.FunctionResponse(id=fc.id, name=name, response={"result": result})]
+                            )
+                            await websocket.send_text(f"İşlem yapıldı: {name}")
 
     except WebSocketDisconnect:
         print("[JARVIS Cloud] Telefon bağlantısı kesildi.")
